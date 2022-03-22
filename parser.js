@@ -92,7 +92,7 @@ function isInput(type) {
 
 
 function isValidAttribute(attr) {
-    let attrs = ['required', 'placeholder', 'multiple', 'checked', 'href', 'type']
+    let attrs = ['required', 'placeholder', 'multiple', 'href', 'type']
 
     if (attrs.indexOf(attr) !== -1) {
         return true
@@ -152,6 +152,10 @@ function createElement(options) {
             if( attr == 'colors') {
                 element.classList.add('color')
             } 
+
+            if ( attr == 'checked' && attributes[attr] == 'true') {
+                element.checked = true
+            }
         }
     }
     return element
