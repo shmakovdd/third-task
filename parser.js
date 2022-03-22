@@ -6,6 +6,7 @@ let loadFileBtn = document.querySelector('.buttons__loadFile');
 let selectedFile = 0
 let filesList = document.querySelector('.files');
 let clearBtn = document.querySelector('.buttons__clear')
+let body = document.body
 
 loadFileBtn.addEventListener('click', recieveFile)
 
@@ -25,8 +26,23 @@ async function recieveFile() {
             let attributes = field.input;
             createElement({tag: tag, parent: label, attr: attributes})
         }
+        if (selectedFile = 1) {
+            let checkbox = document.querySelector('[type="checkbox"]');
+            checkTheme(checkbox)
+            checkbox.addEventListener('change', changeTheme)
+        }
     }
 
+    function checkTheme(checkbox) {
+        if (checkbox.checked) {
+            body.classList.add('body--darktheme')
+        } else {
+            body.classList.remove('body--darktheme')
+        }
+    }
+    function changeTheme(e) {
+        body.classList.toggle('body--darktheme')
+    }
     function renderRefs() {
         let refs = jsonFile.references;
         if (refs == undefined) return

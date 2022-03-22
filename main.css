@@ -64,9 +64,18 @@ ul, li {
 
 body, html {
     height: 100%;
-    background-color: #121010;
-    color: white
 }
+
+body {
+    background-color: white;
+    color: black;
+}
+
+.body--darktheme {
+    background-color: grey;
+    color: white;
+}
+
 
 .buttons {
     display: flex;
