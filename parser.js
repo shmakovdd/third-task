@@ -3,7 +3,8 @@ let loadFileBtn = document.querySelector('.buttons__loadFile');
 let filesList = document.querySelector('.files');
 let clearBtn = document.querySelector('.buttons__clear')
 let body = document.body
-loadFileBtn.addEventListener('click', recieveFile)
+let formResult = document.querySelector('.form-result')
+const data = {}
 
 let files = ['addpost', 'colorsheme', 'interview', 'signin', 'signup']
 let selectedFile = 0
@@ -73,11 +74,12 @@ async function recieveFile() {
         let row = createElement({className: 'form__row form__row--buttons', parent: form})
         bttns.forEach((item, index) => {
             let type = index == 0 ? 'submit' : 'reset';
-            createElement({tag: 'button', parent: row, html: item.text, attr: {'type': type}})
+            let tag = index == 0 ? 'a' : 'button'
+            createElement({tag: tag, parent: row, html: item.text, attr: {'type': type, 'href': './second.html'}})
         })
         let submitBtn = document.querySelector("[type='submit']")
         submitBtn.addEventListener('click', (e)=> {
-            e.preventDefault();
+            createForm()
         })
     }
 
@@ -89,12 +91,19 @@ async function recieveFile() {
    if(imageFiles) {
     for (let i = 0; i < imageFiles.length; i++) {
         imageFiles[i].addEventListener('change', (e)=> {
-            updateImage(imageFiles[i])
+            updateImage(imageFiles[i], i)
         })
     }
    } 
 }
 
+
+function createForm() {
+    for (let i = 0; i < form.elements.length; i++) {
+        data[i] = form.elements[i].type == 'file' ? '' : form.elements[i].value
+    }
+    localStorage.setItem('data', JSON.stringify(data))
+}
 
 function setTag(field) {
     if (isInput(field.input.type) && field.input) {
@@ -132,11 +141,19 @@ function createMask(element, mask) {
     im.mask(input)
 }
 
-function updateImage(file) {
+function updateImage(file, id) {
     if(!['image/jpeg', 'image/png', 'image/pdf'].includes(file.files[0].type)) {
         file.value = '';
         alert('Разрешены только форматы pfd, jpg, png')
     }
+
+    let reader = new FileReader();
+    reader.readAsDataURL(file.files[0]);
+    reader.onload = function () {
+        data[`image${id}`] = reader.result
+    };
+
+    console.log(data);
 }
 
 function createElement(options) {
@@ -205,11 +222,36 @@ document.body.addEventListener('click', e => {
     }
 })
 
-filesList.addEventListener('click', (e)=> {
-    let target = e.target;
-    selectedFile = target.dataset.id
-})
+if (form) {
+    filesList.addEventListener('click', (e)=> {
+        let target = e.target;
+        selectedFile = target.dataset.id
+    })
+    
+    clearBtn.addEventListener('click', ()=> {
+        form.innerHTML = '';
+    })
+    
+    loadFileBtn.addEventListener('click', recieveFile)
+}
 
-clearBtn.addEventListener('click', ()=> {
-    form.innerHTML = '';
-})
+if(formResult) {
+    let data = localStorage.getItem('data')
+    data = JSON.parse(data)
+    let list = createElement({tag: 'ul', className: 'form-result__list', parent: formResult})
+    for (let key in data) {
+        if (data[key] !== '' && isImage(key) == -1) {
+            createElement({tag: 'li', className: 'form-result__item', parent: list, html: data[key]})
+        } else if (isImage(key) !== -1) {
+            let item = createElement({tag: 'li', className: 'form-result__item', parent: list})
+            let img = createElement({tag: 'img', className: 'form-result__image', parent: item})
+            img.setAttribute('src', `${data[key]}`)
+        }
+
+    }
+
+    function isImage(item) {
+        let key = 'image'
+        return item.indexOf(key)
+    }
+}

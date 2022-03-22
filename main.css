@@ -21,7 +21,7 @@ textarea {
 
 
 
-button, .clear, .files__file {
+button, a[type='submit'], .clear, .files__file {
     padding: 10px;
     outline: none;
     border: 1px solid #8686e7;
@@ -116,4 +116,33 @@ button {
 
 .form__row a, .form__row span {
     margin-left: 6px;
+}
+
+.image__wrapper {
+    width: 300px;
+    height: 300px;
+}
+
+.form-result {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.form-result__item {
+    padding-bottom: 5px;
+    border-bottom: 1px solid black;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+a[type='submit'] {
+    margin-left 0;
+    margin-right: 6px;
 }
