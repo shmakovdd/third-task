@@ -98,9 +98,25 @@ async function recieveFile() {
 }
 
 
+function getSelectedOptions (select) {
+    let options = select.options;
+    let result = []
+    for (let i = 0; i < options.length; i++) {
+        let opt = options[i]
+        if (opt.selected) {
+            result.push(opt.value)
+        }
+    }
+    return result.join(', ')
+}
+
 function createForm() {
     for (let i = 0; i < form.elements.length; i++) {
         data[i] = form.elements[i].type == 'file' ? '' : form.elements[i].value
+        if (form.elements[i].type == 'select-multiple') {
+           data[i] = getSelectedOptions(form.elements[i])
+        }
+        form.elements[i].value
     }
     localStorage.setItem('data', JSON.stringify(data))
 }
@@ -168,7 +184,6 @@ function createElement(options) {
     element.innerHTML = `${html}`
 
     if (tag == 'select') {
-        element.setAttribute('name', 'value[]')
         for (let attr in attributes) {
             if (Array.isArray(attributes[attr])) {
                 attributes[attr].forEach(item => {
