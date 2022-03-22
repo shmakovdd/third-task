@@ -52,6 +52,7 @@ async function recieveFile() {
 
     function renderBttns() {
         let bttns = jsonFile.buttons
+        if(bttns == undefined) return
         let row = createElement({className: 'form__row form__row--buttons', parent: form})
         bttns.forEach((item, index) => {
             console.log(item, index);
