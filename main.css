@@ -36,6 +36,7 @@ ul, li {
 
 .files {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .files__file {
