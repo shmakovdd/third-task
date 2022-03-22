@@ -26,7 +26,7 @@ async function recieveFile() {
             let attributes = field.input;
             createElement({tag: tag, parent: label, attr: attributes})
         }
-        if (selectedFile = 1) {
+        if (selectedFile == 1) {
             let checkbox = document.querySelector('[type="checkbox"]');
             checkTheme(checkbox)
             checkbox.addEventListener('change', changeTheme)
