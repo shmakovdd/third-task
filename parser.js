@@ -1,18 +1,19 @@
-
-let files = ['addpost', 'colorsheme', 'interview', 'signin', 'signup']
-
 let form = document.querySelector('#form');
 let loadFileBtn = document.querySelector('.buttons__loadFile');
-let selectedFile = 0
 let filesList = document.querySelector('.files');
 let clearBtn = document.querySelector('.buttons__clear')
 let body = document.body
-
 loadFileBtn.addEventListener('click', recieveFile)
+
+let files = ['addpost', 'colorsheme', 'interview', 'signin', 'signup']
+let selectedFile = 0
 
 async function recieveFile() {
     let response = await fetch(`./json/${files[selectedFile]}.json`);
-
+    if (!response.ok) {
+        alert("Ошибка HTTP: " + response.status)
+        return
+    }
     let jsonFile = await response.json();
     form.innerHTML = ''
     let titleName = jsonFile.name;
@@ -71,19 +72,28 @@ async function recieveFile() {
         if(bttns == undefined) return
         let row = createElement({className: 'form__row form__row--buttons', parent: form})
         bttns.forEach((item, index) => {
-            console.log(item, index);
             let type = index == 0 ? 'submit' : 'reset';
             createElement({tag: 'button', parent: row, html: item.text, attr: {'type': type}})
+        })
+        let submitBtn = document.querySelector("[type='submit']")
+        submitBtn.addEventListener('click', (e)=> {
+            e.preventDefault();
         })
     }
 
    renderFields()
-
    renderRefs()
-
    renderBttns()
-}
 
+   let imageFiles = document.querySelectorAll("[type='file']");
+   if(imageFiles) {
+    for (let i = 0; i < imageFiles.length; i++) {
+        imageFiles[i].addEventListener('change', (e)=> {
+            updateImage(imageFiles[i])
+        })
+    }
+   } 
+}
 
 
 function setTag(field) {
@@ -108,7 +118,7 @@ function isInput(type) {
 
 
 function isValidAttribute(attr) {
-    let attrs = ['required', 'placeholder', 'multiple', 'href', 'type']
+    let attrs = ['required', 'placeholder', 'multiple', 'href', 'type', 'name']
 
     if (attrs.indexOf(attr) !== -1) {
         return true
@@ -117,8 +127,16 @@ function isValidAttribute(attr) {
 
 function createMask(element, mask) {
     let input = element;
+    input.setAttribute('type', 'text')
     let im = new Inputmask(mask)
     im.mask(input)
+}
+
+function updateImage(file) {
+    if(!['image/jpeg', 'image/png', 'image/pdf'].includes(file.files[0].type)) {
+        file.value = '';
+        alert('Разрешены только форматы pfd, jpg, png')
+    }
 }
 
 function createElement(options) {
@@ -133,6 +151,7 @@ function createElement(options) {
     element.innerHTML = `${html}`
 
     if (tag == 'select') {
+        element.setAttribute('name', 'value[]')
         for (let attr in attributes) {
             if (Array.isArray(attributes[attr])) {
                 attributes[attr].forEach(item => {
@@ -141,7 +160,6 @@ function createElement(options) {
             }
         }
     }
-
 
     parent.append(element)
 
@@ -158,9 +176,6 @@ function createElement(options) {
                 element.setAttribute('accept', `${filetypes}`)
             }
 
-            if (attr == 'type' && attributes[attr] == 'number') {
-                element.setAttribute('type', 'text')
-            }
             if (attr == 'mask') {
                 createMask(element, attributes[attr])
             }
