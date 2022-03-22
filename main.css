@@ -1,0 +1,109 @@
+.wrapper {
+    max-width: 1110px;
+    /* height: 100%; */
+    display: flex;
+    padding: 20px 15px 0 15px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+label {
+    display: block;
+}
+
+textarea {
+    max-width: 250px;
+    height: 100px;
+    resize: none;
+}
+
+
+
+button, .clear, .files__file {
+    padding: 10px;
+    outline: none;
+    border: 1px solid #8686e7;
+    background-color: transparent;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+ul, li {
+    list-style-type: none;
+}
+
+.files {
+    display: flex;
+}
+
+.files__file {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.buttons__loadFile {
+    margin-right: 15px;
+}
+
+.form__row--buttons {
+    display: flex;
+    row-gap: 10px;
+}
+
+.form__row--buttons button {
+    margin-right: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    background-color: #121010;
+    color: white
+}
+
+.buttons {
+    display: flex;
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid #8686e7;
+    border-left-color: transparent;
+    border-right-color: transparent;
+
+}
+
+.form__row {
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.form__label {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+button {
+    color: inherit;
+}
+
+.form__title {
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+
+.form__row a, .form__row span {
+    margin-left: 6px;
+}
